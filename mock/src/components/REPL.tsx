@@ -17,11 +17,6 @@ export default function REPL() {
   const [cmdList, setCommandList] = useState<string[]>([]);
   return (
     <div className="repl">  
-      {/*This is where your REPLHistory might go... You also may choose to add it within your REPLInput 
-      component or somewhere else depending on your component organization. What are the pros and cons of each? */}
-      {/* TODO: Update your REPLHistory and REPLInput to take in new shared state as props */}
-
-      {/* <REPLInput history = {cmdList} setHistory={setCommandList}/> */}
       <REPLHistory history = {cmdList}/>
       <hr></hr>
       <REPLInput history = {cmdList} setHistory={setCommandList}/>

@@ -1,6 +1,7 @@
 import '../styles/main.css';
 import { Dispatch, SetStateAction, useState} from 'react';
 import { ControlledInput } from './ControlledInput';
+import {loadResponse} from './response'
 
 interface REPLInputProps{
   // TODO: Fill this with desired props... Maybe something to keep track of the submitted commands
@@ -14,8 +15,52 @@ export function REPLInput(props : REPLInputProps) {
     // Manages the contents of the input box
     const [commandString, setCommandString] = useState<string>('');
     // TODO WITH TA : add a count state
-    const [count, setCount] = useState<number> (0);
+    const [count, setCount] = useState<number>(0);
     // TODO WITH TA: build a handleSubmit function called in button onClick
+
+    const [verb, setVerb] = useState<boolean>(false);
+
+
+    
+    /**
+     * handles the command-line input and outputs the approriate response
+     * @param command the endpoint to be hit
+     */
+    function handle(command : string) {
+      let splitCommand : string[] = command.split(" ")
+      let parsedCommand : string = splitCommand[0];
+      // console.log(splitCommand[0].toLowerCase())
+      let response;
+      if (splitCommand[0].toLowerCase() == "load_csv") {
+        response = loadResponse(splitCommand)
+        console.log(response)
+
+      } else if (splitCommand[0].toLowerCase() == "view") {
+        response = loadResponse(splitCommand)
+        handleSubmit(parsedCommand)
+
+      } else if (splitCommand[0].toLowerCase() == "search") {
+        response = loadResponse(splitCommand)
+        handleSubmit(parsedCommand)
+      } else {
+        response = loadResponse(splitCommand)
+        handleSubmit(command + " is not a valid command.")
+      }
+
+      let concatenatedResponse : string;
+      // verbose setting
+      if (verb) {
+        concatenatedResponse = "Output: \n" + response["type"] + ": " + response["data"]
+
+      }
+
+      // non-verbose setting
+      else {
+        concatenatedResponse = "Output: \n" + response["type"] + ": " + response["data"]
+      }
+      props.setHistory([...props.history, concatenatedResponse])
+
+    }
 
     function handleSubmit(commandString : string) {
       setCount(count + 1);
@@ -37,9 +82,8 @@ export function REPLInput(props : REPLInputProps) {
               <legend>Enter a command:</legend>
               <ControlledInput value={commandString} setValue={setCommandString} ariaLabel={"Command input"}/>
             </fieldset>
-            {/* TODO WITH TA: Build a handleSubmit function that increments count and displays the text in the button */}
-            {/* TODO: Currently this button just counts up, can we make it push the contents of the input box to the history?*/}
-            <button onClick = {() => handleSubmit(commandString)}>Submitted {count} </button>
+              {/* TODO: DEFINE A METHOD THAT PERFORMS GET REQUESTS ON AN EMPOINT */}
+            <button onClick = {() => handle(commandString)}>Submitted {count} </button>
         </div>
     );
   }

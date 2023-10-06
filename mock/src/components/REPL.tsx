@@ -23,7 +23,8 @@ export default function REPL() {
       <REPLHistory history = {cmdList}/>
       <VerbosityController toggle = {verbosity} setToggle = {setVerbosity}/>
       <hr></hr>
-      <REPLInput history = {cmdList} setHistory={setCommandList}/>
+      <REPLInput history = {cmdList} setHistory={setCommandList}
+      toggle = {verbosity} setToggle = {setVerbosity} />
     </div>
   );
 }

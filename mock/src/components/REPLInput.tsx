@@ -8,6 +8,8 @@ interface REPLInputProps{
   // TODO: Fill this with desired props... Maybe something to keep track of the submitted commands
   history: string[]
   setHistory: Dispatch<SetStateAction<string[]>>
+  toggle: number
+  setToggle: Dispatch<SetStateAction<number>>
 }
 // You can use a custom interface or explicit fields or both! An alternative to the current function header might be:
 // REPLInput(history: string[], setHistory: Dispatch<SetStateAction<string[]>>)
@@ -50,14 +52,17 @@ export function REPLInput(props : REPLInputProps) {
 
       let concatenatedResponse : string;
       // verbose setting
-      if (verb) {
-        concatenatedResponse = "Output: \n" + response["type"] + ": " + response["data"]
+      if (props.toggle == 0) {
+        concatenatedResponse = "Brief Output: \n" + response["type"] + ": " + response["data"]
 
       }
 
       // non-verbose setting
+      else if (props.toggle == 1) {
+        concatenatedResponse = "Verbpse Output: \n" + response["type"] + ": " + response["data"]
+      }
       else {
-        concatenatedResponse = "Output: \n" + response["type"] + ": " + response["data"]
+        concatenatedResponse = "this should not be possible..."
       }
       props.setHistory([...props.history, concatenatedResponse])
 

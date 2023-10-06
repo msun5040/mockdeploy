@@ -2,6 +2,7 @@ import '../styles/main.css';
 import { Dispatch, SetStateAction, useState} from 'react';
 import { ControlledInput } from './ControlledInput';
 import {loadResponse} from './response'
+import Button from 'react-bootstrap/Button';
 
 interface REPLInputProps{
   // TODO: Fill this with desired props... Maybe something to keep track of the submitted commands
@@ -83,7 +84,7 @@ export function REPLInput(props : REPLInputProps) {
               <ControlledInput value={commandString} setValue={setCommandString} ariaLabel={"Command input"}/>
             </fieldset>
               {/* TODO: DEFINE A METHOD THAT PERFORMS GET REQUESTS ON AN EMPOINT */}
-            <button onClick = {() => handle(commandString)}>Submitted {count} </button>
+            <Button variant = "primary" onClick = {() => handle(commandString)}>Submitted {count} </Button>
         </div>
     );
   }

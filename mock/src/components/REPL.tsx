@@ -2,6 +2,8 @@ import { useState } from 'react';
 import '../styles/main.css';
 import { REPLHistory } from './REPLHistory';
 import { REPLInput } from './REPLInput';
+import { VerbosityController } from './VerbosityController';
+
 
 /* 
   You'll want to expand this component (and others) for the sprints! Remember 
@@ -15,9 +17,11 @@ import { REPLInput } from './REPLInput';
 export default function REPL() {
   // TODO: Add some kind of shared state that holds all the commands submitted.
   const [cmdList, setCommandList] = useState<string[]>([]);
+  const [verbosity, setVerbosity] = useState<number>(0);
   return (
     <div className="repl">  
       <REPLHistory history = {cmdList}/>
+      <VerbosityController toggle = {verbosity} setToggle = {setVerbosity}/>
       <hr></hr>
       <REPLInput history = {cmdList} setHistory={setCommandList}/>
     </div>

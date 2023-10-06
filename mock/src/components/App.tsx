@@ -1,6 +1,7 @@
 import '../styles/App.css';
 // import { OutputBox } from './OutputBox';
 import REPL from './REPL';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 /**
  * This is the highest level component!

@@ -17,14 +17,17 @@ import { VerbosityController } from './VerbosityController';
 export default function REPL() {
   // TODO: Add some kind of shared state that holds all the commands submitted.
   const [cmdList, setCommandList] = useState<string[]>([]);
+  const [responses, setResponses] = useState<JSX.Element[]>([]);
   const [verbosity, setVerbosity] = useState<number>(0);
+  const [dataMap, setDataMap] = useState<Map<string, JSON>>(new Map<string, JSON>())
   return (
     <div className="repl">  
-      <REPLHistory history = {cmdList}/>
+      <REPLHistory history = {responses}/>
       <VerbosityController toggle = {verbosity} setToggle = {setVerbosity}/>
       <hr></hr>
       <REPLInput history = {cmdList} setHistory={setCommandList}
-      toggle = {verbosity} setToggle = {setVerbosity} />
+      toggle = {verbosity} setToggle = {setVerbosity} 
+      responses = {responses} setResponses= {setResponses}/>
     </div>
   );
 }

@@ -1,7 +1,6 @@
-'{"header_flag":true,"file_path":"/Users/sean/Documents/cs32/server-syu0916-huang-tiffany/data/SimpleCsv/head.csv","success_message":"file at /Users/sean/Documents/cs32/server-syu0916-huang-tiffany/data/SimpleCsv/head.csv successfully loaded","response_type":"success"}'
 
 export function successResponse() {
-    return '{"header_flag":true,"data":"data/SimpleCsv/head.csv","success_message":"file at /Users/sean/Documents/cs32/server-syu0916-huang-tiffany/data/SimpleCsv/head.csv successfully loaded","type":"success"}'
+    return '{"data":{"headers":["one","two","three","four","five"],"body":[["1","2","3","4","5"],["10","20","30","40","50"],["100","200","300","400","500"]]},"type":"success"}'
 }
 
 /**
@@ -9,5 +8,6 @@ export function successResponse() {
  * @returns 
  */
 export function errorBadRequest() {
-    return '{"error_message":"/Users/sean/cs32/server-syu0916-huang-tiffany/data/SimpleCsv/head.csv (No such file or directory)","error_bad_request":"invalid arguments","response_type":"error"}'
+    return '{"error_message":"/Users/sean/cs32/server-syu0916-huang-tiffany/data/SimpleCsv/head.csv (No such file or directory)",'+
+    '"error_bad_request":"invalid arguments","response_type":"error"}'
 }

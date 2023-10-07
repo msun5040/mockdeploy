@@ -10,6 +10,8 @@ interface REPLInputProps{
   setHistory: Dispatch<SetStateAction<string[]>>
   toggle: number
   setToggle: Dispatch<SetStateAction<number>>
+  responses: JSX.Element[]
+  setResponses: Dispatch<SetStateAction<JSX.Element[]>>
 }
 // You can use a custom interface or explicit fields or both! An alternative to the current function header might be:
 // REPLInput(history: string[], setHistory: Dispatch<SetStateAction<string[]>>)
@@ -50,21 +52,39 @@ export function REPLInput(props : REPLInputProps) {
         handleSubmit(command + " is not a valid command.")
       }
 
-      let concatenatedResponse : string;
+      let concatenatedResponse : JSX.Element;
       // verbose setting
       if (props.toggle == 0) {
-        concatenatedResponse = "Brief Output: \n" + response["type"] + ": " + response["data"]
+        concatenatedResponse = 
+        <div>
+          <p>
+            <b>Brief Output: </b>
+            <ul>
+              <li>{response["type"] + ": " + JSON.stringify(response["data"])}</li>
+            </ul>
+          </p>
+        </div>
 
       }
 
       // non-verbose setting
       else if (props.toggle == 1) {
-        concatenatedResponse = "Verbpse Output: \n" + response["type"] + ": " + response["data"]
+        concatenatedResponse = 
+        <div>
+          <p>
+            <b>Verbose Output: </b>
+            <ul>
+              <li>{"Command:" + command}</li>
+              <li>{"Response Type:"+  response["type"] }</li>
+              <li>{response["type"] + ": " + JSON.stringify(response["data"])}</li>
+            </ul>
+          </p>
+        </div>
       }
       else {
-        concatenatedResponse = "this should not be possible..."
+        concatenatedResponse = <div> this isn't right... </div>
       }
-      props.setHistory([...props.history, concatenatedResponse])
+      props.setResponses([...props.responses, concatenatedResponse, <hr></hr>])
 
     }
 

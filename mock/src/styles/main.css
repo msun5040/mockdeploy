@@ -6,14 +6,17 @@
 
 .repl {
     position:relative;
-    min-height:95vh;    
+    min-height:85vh;    
 }
 
 .repl-history {      
-    height:55vh;   
+    height: 60vh;
+    padding-right: 2rem;
+    padding-left: 2rem;
+    text-align: start;
     margin: auto;
     display: block;
-    overflow: scroll;    
+    overflow: scroll;
 }
 
 .repl-input {        

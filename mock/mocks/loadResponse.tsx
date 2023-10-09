@@ -9,5 +9,5 @@ export function successResponse() {
  */
 export function errorBadRequest() {
     return '{"error_message":"/Users/sean/cs32/server-syu0916-huang-tiffany/data/SimpleCsv/head.csv (No such file or directory)",'+
-    '"error_bad_request":"invalid arguments","response_type":"error"}'
+    '"error_bad_request":"invalid arguments","type":"error"}'
 }

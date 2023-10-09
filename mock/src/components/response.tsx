@@ -8,10 +8,12 @@ export function responseHandler(command : string, args : string[]) {
 }
 
 export function loadResponse(args: string[]) {
+    console.log(args)
     if (args[1] === "yes"){
         return JSON.parse(successResponse())
     }
     else if (args[1] === "no") {
+        console.log("no")
         return JSON.parse(errorBadRequest())
     }
 }

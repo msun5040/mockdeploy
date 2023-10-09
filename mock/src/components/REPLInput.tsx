@@ -1,6 +1,8 @@
 import '../styles/main.css';
 import { Dispatch, SetStateAction, useState} from 'react';
 import { ControlledInput } from './ControlledInput';
+import {LoadOutput} from './LoadOutput'
+
 import {loadResponse} from './response'
 import Button from 'react-bootstrap/Button';
 
@@ -8,10 +10,15 @@ interface REPLInputProps{
   // TODO: Fill this with desired props... Maybe something to keep track of the submitted commands
   history: string[]
   setHistory: Dispatch<SetStateAction<string[]>>
+
   toggle: number
   setToggle: Dispatch<SetStateAction<number>>
+
   responses: JSX.Element[]
   setResponses: Dispatch<SetStateAction<JSX.Element[]>>
+
+  dataMap: Map<string, JSON>
+  setDataMap: Dispatch<SetStateAction<Map<string, JSON>>>
 }
 // You can use a custom interface or explicit fields or both! An alternative to the current function header might be:
 // REPLInput(history: string[], setHistory: Dispatch<SetStateAction<string[]>>)
@@ -38,10 +45,12 @@ export function REPLInput(props : REPLInputProps) {
       let response;
       if (splitCommand[0].toLowerCase() == "load_csv") {
         response = loadResponse(splitCommand)
+        LoadOutput(command , props, response)
         console.log(response)
 
       } else if (splitCommand[0].toLowerCase() == "view") {
         response = loadResponse(splitCommand)
+        // TODO: define another component called view output to handle the view stuff
         handleSubmit(parsedCommand)
 
       } else if (splitCommand[0].toLowerCase() == "search") {
@@ -51,40 +60,43 @@ export function REPLInput(props : REPLInputProps) {
         response = loadResponse(splitCommand)
         handleSubmit(command + " is not a valid command.")
       }
+      
 
-      let concatenatedResponse : JSX.Element;
-      // verbose setting
-      if (props.toggle == 0) {
-        concatenatedResponse = 
-        <div>
-          <p>
-            <b>Brief Output: </b>
-            <ul>
-              <li>{response["type"] + ": " + JSON.stringify(response["data"])}</li>
-            </ul>
-          </p>
-        </div>
 
-      }
+      
+      // let concatenatedResponse : JSX.Element;
+      // // verbose setting
+      // if (props.toggle == 0) {
+      //   concatenatedResponse = 
+      //   <div>
+      //     <p>
+      //       <b>Brief Output: </b>
+      //       <ul>
+      //         <li>{response["type"] + ": " + JSON.stringify(response["data"])}</li>
+      //       </ul>
+      //     </p>
+      //   </div>
 
-      // non-verbose setting
-      else if (props.toggle == 1) {
-        concatenatedResponse = 
-        <div>
-          <p>
-            <b>Verbose Output: </b>
-            <ul>
-              <li>{"Command:" + command}</li>
-              <li>{"Response Type:"+  response["type"] }</li>
-              <li>{response["type"] + ": " + JSON.stringify(response["data"])}</li>
-            </ul>
-          </p>
-        </div>
-      }
-      else {
-        concatenatedResponse = <div> this isn't right... </div>
-      }
-      props.setResponses([...props.responses, concatenatedResponse, <hr></hr>])
+      // }
+
+      // // non-verbose setting
+      // else if (props.toggle == 1) {
+      //   concatenatedResponse = 
+      //   <div>
+      //     <p>
+      //       <b>Verbose Output: </b>
+      //       <ul>
+      //         <li>{"Command:" + command}</li>
+      //         <li>{"Response Type:"+  response["type"] }</li>
+      //         <li>{response["type"] + ": " + JSON.stringify(response["data"])}</li>
+      //       </ul>
+      //     </p>
+      //   </div>
+      // }
+      // else {
+      //   concatenatedResponse = <div> this isn't right... </div>
+      // }
+      // props.setResponses([...props.responses, concatenatedResponse, <hr></hr>])
 
     }
 

@@ -14,6 +14,8 @@ import { VerbosityController } from './VerbosityController';
   You don't need to do that for this gearup.
 */
 
+// interface 
+
 export default function REPL() {
   // TODO: Add some kind of shared state that holds all the commands submitted.
   const [cmdList, setCommandList] = useState<string[]>([]);
@@ -27,7 +29,8 @@ export default function REPL() {
       <hr></hr>
       <REPLInput history = {cmdList} setHistory={setCommandList}
       toggle = {verbosity} setToggle = {setVerbosity} 
-      responses = {responses} setResponses= {setResponses}/>
+      responses = {responses} setResponses= {setResponses}
+      dataMap={dataMap} setDataMap={setDataMap}/>
     </div>
   );
 }

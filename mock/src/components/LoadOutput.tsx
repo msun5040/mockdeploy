@@ -35,7 +35,7 @@ export function LoadOutput(command : string, props : REPLOutputProps, response :
 
     let contentResponse : JSX.Element[]
     let concatenatedResponse : JSX.Element;
-
+    console.log("type:" + response.type)
     if (response.type == "success"){
         contentResponse = successResponseMap(response)
     } else if (response.type == "error") {

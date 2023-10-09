@@ -18,7 +18,8 @@ interface REPLInputProps{
   setResponses: Dispatch<SetStateAction<JSX.Element[]>>
 
   dataMap: Map<string, JSON>
-  setDataMap: Dispatch<SetStateAction<Map<string, JSON>>>
+  // setDataMap: Dispatch<SetStateAction<Map<string, JSON>>>
+  setDataMap: React.Dispatch<React.SetStateAction<Map<string, JSON>>>;
 }
 // You can use a custom interface or explicit fields or both! An alternative to the current function header might be:
 // REPLInput(history: string[], setHistory: Dispatch<SetStateAction<string[]>>)
@@ -29,7 +30,9 @@ export function REPLInput(props : REPLInputProps) {
     // TODO WITH TA : add a count state
     const [count, setCount] = useState<number>(0);
     // TODO WITH TA: build a handleSubmit function called in button onClick
-
+    //const [dataMap, setDataMap] = useState<{ [key: string]: JSON }>({});
+    const [dataMap, setDataMap] =useState(new Map<string, JSON>())
+    //const [dataMap, setDataMap] = new Map<string, JSON>();
     const [verb, setVerb] = useState<boolean>(false);
 
 
@@ -39,14 +42,34 @@ export function REPLInput(props : REPLInputProps) {
      * @param command the endpoint to be hit
      */
     function handle(command : string) {
+      
       let splitCommand : string[] = command.split(" ")
       let parsedCommand : string = splitCommand[0];
       // console.log(splitCommand[0].toLowerCase())
       let response;
       if (splitCommand[0].toLowerCase() == "load_csv") {
-        response = loadResponse(splitCommand)
+        console.log("yes")
+        // for (let key in dataMap) {
+        //   let value = dataMap.get(key);
+        //   if (key === splitCommand[1]){
+        //     response = value
+        //   } else {
+        //     response = loadResponse(splitCommand)
+        //     //setDataMap({ ...dataMap, key: value})              
+        //     setDataMap(dataMap.set(key, response))
+        //   }
+          
+        // }
+        if (dataMap.has(splitCommand[1])){
+          response = dataMap.get(splitCommand[1])
+        } else {
+          response = loadResponse(splitCommand)
+          dataMap.set(splitCommand[1], response)
+        }
+
+        console.log(dataMap)
         LoadOutput(command , props, response)
-        console.log(response)
+        
 
       } else if (splitCommand[0].toLowerCase() == "view") {
         response = loadResponse(splitCommand)
@@ -60,43 +83,6 @@ export function REPLInput(props : REPLInputProps) {
         response = loadResponse(splitCommand)
         handleSubmit(command + " is not a valid command.")
       }
-      
-
-
-      
-      // let concatenatedResponse : JSX.Element;
-      // // verbose setting
-      // if (props.toggle == 0) {
-      //   concatenatedResponse = 
-      //   <div>
-      //     <p>
-      //       <b>Brief Output: </b>
-      //       <ul>
-      //         <li>{response["type"] + ": " + JSON.stringify(response["data"])}</li>
-      //       </ul>
-      //     </p>
-      //   </div>
-
-      // }
-
-      // // non-verbose setting
-      // else if (props.toggle == 1) {
-      //   concatenatedResponse = 
-      //   <div>
-      //     <p>
-      //       <b>Verbose Output: </b>
-      //       <ul>
-      //         <li>{"Command:" + command}</li>
-      //         <li>{"Response Type:"+  response["type"] }</li>
-      //         <li>{response["type"] + ": " + JSON.stringify(response["data"])}</li>
-      //       </ul>
-      //     </p>
-      //   </div>
-      // }
-      // else {
-      //   concatenatedResponse = <div> this isn't right... </div>
-      // }
-      // props.setResponses([...props.responses, concatenatedResponse, <hr></hr>])
 
     }
 

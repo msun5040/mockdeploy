@@ -2,6 +2,7 @@ import '../styles/main.css';
 import { Dispatch, SetStateAction, useState} from 'react';
 import { ControlledInput } from './ControlledInput';
 import {LoadOutput} from './LoadOutput'
+import { ViewOutput } from './ViewOutput';
 
 import {loadResponse} from './response'
 import Button from 'react-bootstrap/Button';
@@ -18,8 +19,10 @@ interface REPLInputProps{
   setResponses: Dispatch<SetStateAction<JSX.Element[]>>
 
   dataMap: Map<string, JSON>
-  // setDataMap: Dispatch<SetStateAction<Map<string, JSON>>>
-  setDataMap: React.Dispatch<React.SetStateAction<Map<string, JSON>>>;
+  setDataMap: Dispatch<SetStateAction<Map<string, JSON>>>
+
+  currentDataset: JSON | null
+  setCurrentDataset:  Dispatch<SetStateAction<JSON | null>>
 }
 // You can use a custom interface or explicit fields or both! An alternative to the current function header might be:
 // REPLInput(history: string[], setHistory: Dispatch<SetStateAction<string[]>>)
@@ -32,8 +35,6 @@ export function REPLInput(props : REPLInputProps) {
     // TODO WITH TA: build a handleSubmit function called in button onClick
     //const [dataMap, setDataMap] = useState<{ [key: string]: JSON }>({});
     const [dataMap, setDataMap] =useState(new Map<string, JSON>())
-    //const [dataMap, setDataMap] = new Map<string, JSON>();
-    const [verb, setVerb] = useState<boolean>(false);
 
 
     
@@ -46,7 +47,7 @@ export function REPLInput(props : REPLInputProps) {
       let splitCommand : string[] = command.split(" ")
       let parsedCommand : string = splitCommand[0];
       // console.log(splitCommand[0].toLowerCase())
-      let response;
+      let response: any;
       if (splitCommand[0].toLowerCase() == "load_csv") {
 
         if (dataMap.has(splitCommand[1])){
@@ -55,12 +56,16 @@ export function REPLInput(props : REPLInputProps) {
           response = loadResponse(splitCommand)
           setDataMap(dataMap.set(splitCommand[1], response))
         }
-        
+
+        // setting the current dataset for other handlers to use
+        props.setCurrentDataset(response)
         LoadOutput(command , props, response)
         
 
       } else if (splitCommand[0].toLowerCase() == "view") {
         response = loadResponse(splitCommand)
+        ViewOutput(props, props.currentDataset)
+
         // TODO: define another component called view output to handle the view stuff
         handleSubmit(parsedCommand)
 

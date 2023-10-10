@@ -48,26 +48,14 @@ export function REPLInput(props : REPLInputProps) {
       // console.log(splitCommand[0].toLowerCase())
       let response;
       if (splitCommand[0].toLowerCase() == "load_csv") {
-        console.log("yes")
-        // for (let key in dataMap) {
-        //   let value = dataMap.get(key);
-        //   if (key === splitCommand[1]){
-        //     response = value
-        //   } else {
-        //     response = loadResponse(splitCommand)
-        //     //setDataMap({ ...dataMap, key: value})              
-        //     setDataMap(dataMap.set(key, response))
-        //   }
-          
-        // }
+
         if (dataMap.has(splitCommand[1])){
           response = dataMap.get(splitCommand[1])
         } else {
           response = loadResponse(splitCommand)
-          dataMap.set(splitCommand[1], response)
+          setDataMap(dataMap.set(splitCommand[1], response))
         }
-
-        console.log(dataMap)
+        
         LoadOutput(command , props, response)
         
 

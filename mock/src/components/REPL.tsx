@@ -22,6 +22,7 @@ export default function REPL() {
   const [responses, setResponses] = useState<JSX.Element[]>([]);
   const [verbosity, setVerbosity] = useState<number>(0);
   const [dataMap, setDataMap] = useState<Map<string, JSON>>(new Map<string, JSON>())
+  const [currentDataset, setCurrentDataset] = useState<JSON | null>(null)
   return (
     <div className="repl">  
       <REPLHistory history = {responses}/>
@@ -30,7 +31,8 @@ export default function REPL() {
       <REPLInput history = {cmdList} setHistory={setCommandList}
       toggle = {verbosity} setToggle = {setVerbosity} 
       responses = {responses} setResponses= {setResponses}
-      dataMap={dataMap} setDataMap={setDataMap}/>
+      dataMap={dataMap} setDataMap={setDataMap}
+      currentDataset = {currentDataset} setCurrentDataset = {setCurrentDataset}/>
     </div>
   );
 }

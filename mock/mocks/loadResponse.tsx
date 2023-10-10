@@ -1,5 +1,5 @@
-const obj : JSON = '{"data":{"headers":["one","two","three","four","five"],"body":[["1","2","3","4","5"],["10","20","30","40","50"],["100","200","300","400","500"]]},"type":"success"}'
-const dataMap = new Map<string, JSON>(["yes", obj])
+// const obj : JSON = '{"data":{"headers":["one","two","three","four","five"],"body":[["1","2","3","4","5"],["10","20","30","40","50"],["100","200","300","400","500"]]},"type":"success"}'
+// const dataMap = new Map<string, JSON>(["yes", obj])
 
 export function successResponse() {
     return '{"data":{"headers":["one","two","three","four","five"],"body":[["1","2","3","4","5"],["10","20","30","40","50"],["100","200","300","400","500"]]},"type":"success"}'

@@ -8,7 +8,7 @@ export function responseHandler(command : string, args : string[]) {
 }
 
 export function loadResponse(args: string[]) {
-    console.log(args)
+    console.log("args:" + args)
     if (args[1] === "yes"){
         return JSON.parse(successResponse())
     }

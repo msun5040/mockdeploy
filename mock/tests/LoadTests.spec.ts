@@ -21,10 +21,17 @@ test.beforeEach(() => {
  * you put before parts of your test that might take time to run, 
  * like any interaction with the page.
  */
-test('on page load, i see an input bar', async ({ page }) => {
+test('on calling load with no arguments', async ({ page }) => {
   // Notice: http, not https! Our front-end is not set up for HTTPs.
   await page.goto('http://localhost:8000/');
   await expect(page.getByLabel('Command input')).toBeVisible()
+
+
+
+  await page.getByLabel('Command input').click();
+  await page.getByLabel('Command input').fill('load_csv');
+  await page.getByLabel('submit-button').click();
+  await expect(page.getByLabel('load-error')).toContainText('load_csv requires at least 1 argument.')
 })
 
 test('after I type into the input box, its text changes', async ({ page }) => {

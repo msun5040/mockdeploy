@@ -55,7 +55,9 @@ export function REPLInput(props : REPLInputProps) {
         // display error message for user
         if (splitCommand.length < 2) {
           console.log(splitCommand.length)
-          props.setResponses([...props.responses, <div><p style = {{color: 'red'}}><b>load_csv requires at least 1 argument.</b></p></div>, <hr></hr>])
+          props.setResponses([...props.responses, 
+          <div aria-label= {'load-error'}><p style = {{color: 'red'}}><b>load_csv requires at least 1 argument.</b></p></div>, 
+          <hr></hr>])
         } else {
           if (dataMap.has(splitCommand[1])){
             response = dataMap.get(splitCommand[1])
@@ -117,7 +119,7 @@ export function REPLInput(props : REPLInputProps) {
               <ControlledInput value={commandString} setValue={setCommandString} ariaLabel={"Command input"}/>
             </fieldset>
             
-            <Button variant = "primary" onClick = {() => handle(commandString)}>Submitted {count} </Button>
+            <Button variant = "primary" aria-label='submit-button' onClick = {() => handle(commandString)}>Submitted {count} </Button>
         </div>
     );
   }

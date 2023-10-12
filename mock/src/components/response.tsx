@@ -15,5 +15,7 @@ export function loadResponse(args: string[]) {
     else if (args[1] === "no") {
         console.log("no")
         return JSON.parse(errorBadRequest())
+    } else {
+        return JSON.parse('{}')
     }
 }

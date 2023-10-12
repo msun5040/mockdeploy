@@ -23,6 +23,9 @@ interface REPLInputProps{
 
   currentDataset: JSON | null
   setCurrentDataset:  Dispatch<SetStateAction<JSON | null>>
+
+  verbosity: number
+  setVerbosity: Dispatch<SetStateAction<number>>
 }
 // You can use a custom interface or explicit fields or both! An alternative to the current function header might be:
 // REPLInput(history: string[], setHistory: Dispatch<SetStateAction<string[]>>)
@@ -49,18 +52,34 @@ export function REPLInput(props : REPLInputProps) {
       // console.log(splitCommand[0].toLowerCase())
       let response: any;
       if (splitCommand[0].toLowerCase() == "load_csv") {
-
-        if (dataMap.has(splitCommand[1])){
-          response = dataMap.get(splitCommand[1])
+        // display error message for user
+        if (splitCommand.length < 2) {
+          console.log(splitCommand.length)
+          props.setResponses([...props.responses, 
+          <div aria-label= {'load-error'}><p style = {{color: 'red'}}><b>load_csv requires at least 1 argument.</b></p></div>, 
+          <hr></hr>])
         } else {
-          response = loadResponse(splitCommand)
-          setDataMap(dataMap.set(splitCommand[1], response))
+          if (dataMap.has(splitCommand[1])){
+            response = dataMap.get(splitCommand[1])
+          } else {
+            response = loadResponse(splitCommand)
+            setDataMap(dataMap.set(splitCommand[1], response))
+          }
         }
 
+
         // setting the current dataset for other handlers to use
+        console.log(response)
         props.setCurrentDataset(response)
         LoadOutput(command , props, response)
         
+
+      } else if (splitCommand[0].toLowerCase() == "mode") {
+        if (props.verbosity == 0) {
+          props.setVerbosity(1)
+        } else {
+          props.setVerbosity(0)
+        }
 
       } else if (splitCommand[0].toLowerCase() == "view") {
         response = loadResponse(splitCommand)
@@ -99,8 +118,8 @@ export function REPLInput(props : REPLInputProps) {
               <legend>Enter a command:</legend>
               <ControlledInput value={commandString} setValue={setCommandString} ariaLabel={"Command input"}/>
             </fieldset>
-              {/* TODO: DEFINE A METHOD THAT PERFORMS GET REQUESTS ON AN EMPOINT */}
-            <Button variant = "primary" onClick = {() => handle(commandString)}>Submitted {count} </Button>
+            
+            <Button variant = "primary" aria-label='submit-button' onClick = {() => handle(commandString)}>Submitted {count} </Button>
         </div>
     );
   }

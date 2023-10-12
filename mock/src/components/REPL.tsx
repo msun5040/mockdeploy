@@ -32,7 +32,8 @@ export default function REPL() {
       toggle = {verbosity} setToggle = {setVerbosity} 
       responses = {responses} setResponses= {setResponses}
       dataMap={dataMap} setDataMap={setDataMap}
-      currentDataset = {currentDataset} setCurrentDataset = {setCurrentDataset}/>
+      currentDataset = {currentDataset} setCurrentDataset = {setCurrentDataset}
+      verbosity = {verbosity} setVerbosity = {setVerbosity}/>
     </div>
   );
 }

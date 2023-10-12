@@ -57,8 +57,9 @@ export function ViewOutput(prop: REPLOutputProps, responseMap: JSON | null) {
             </Table>
         
 
-        concatenatedResponse =  <div>{table}</div>     
+        concatenatedResponse =  <div aria-label = 'view-response'>{table}</div>     
     }
 
-    prop.setResponses([...prop.responses, concatenatedResponse, <hr></hr>])
+    prop.setResponses([...prop.responses, concatenatedResponse, 
+    <hr aria-label = "command-separator"></hr>])
 }

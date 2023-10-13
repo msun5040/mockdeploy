@@ -26,7 +26,7 @@ test('on calling search on a faulty column input', async ({ page }) => {
   
   await expect(page.getByLabel('Command input')).toBeVisible()
   await page.getByLabel('Command input').click();
-  await page.getByLabel('Command input').fill('load_csv zoo_file');
+  await page.getByLabel('Command input').fill('load_csv zoo_filepath');
   await page.getByLabel('submit-button').click();
 
   await page.getByLabel('Command input').click();
@@ -44,7 +44,7 @@ test('on calling search on a faulty searched input', async ({ page }) => {
   
     await expect(page.getByLabel('Command input')).toBeVisible()
     await page.getByLabel('Command input').click();
-    await page.getByLabel('Command input').fill('load_csv zoo_file');
+    await page.getByLabel('Command input').fill('load_csv zoo_filepath');
     await page.getByLabel('submit-button').click();
   
     await page.getByLabel('Command input').click();
@@ -61,7 +61,7 @@ test('on calling search on a valid search input', async ({ page }) => {
 
     await expect(page.getByLabel('Command input')).toBeVisible()
     await page.getByLabel('Command input').click();
-    await page.getByLabel('Command input').fill('load_csv zoo_file');
+    await page.getByLabel('Command input').fill('load_csv zoo_filepath');
     await page.getByLabel('submit-button').click();
   
     await page.getByLabel('Command input').click();
@@ -80,7 +80,7 @@ test('on calling search on a valid search input Jeremy', async ({ page }) => {
 
     await expect(page.getByLabel('Command input')).toBeVisible()
     await page.getByLabel('Command input').click();
-    await page.getByLabel('Command input').fill('load_csv zoo_file');
+    await page.getByLabel('Command input').fill('load_csv zoo_filepath');
     await page.getByLabel('submit-button').click();
   
     await page.getByLabel('Command input').click();
@@ -112,17 +112,41 @@ test('on calling search on a valid search input Jeremy', async ({ page }) => {
 
 })
 
+test('on calling search on a valid index-based column', async ({ page }) => {
 
-
-
-// on caling 
-
-
-  // Locate the table by its selector
+    await expect(page.getByLabel('Command input')).toBeVisible()
+    await page.getByLabel('Command input').click();
+    await page.getByLabel('Command input').fill('load_csv zoo_filepath');
+    await page.getByLabel('submit-button').click();
   
+    await page.getByLabel('Command input').click();
+    await page.getByLabel('Command input').fill('search 3 penguin');
+    await page.getByLabel('submit-button').click();
 
-  // Extract rows and columns from the table
+    const table = await page.getByLabel('search-response');
+
+    await expect(table).toBeVisible();
+    await expect(page.getByLabel('search-response').getByText('penguin')).toHaveCount(3)
+    await expect(page.getByLabel('search-response').getByText('krill')).toHaveCount(2)
+
+})
+
+test('on calling search on an invalid index-based column', async ({ page }) => {
+
+    await expect(page.getByLabel('Command input')).toBeVisible()
+    await page.getByLabel('Command input').click();
+    await page.getByLabel('Command input').fill('load_csv zoo_filepath');
+    await page.getByLabel('submit-button').click();
   
+    await page.getByLabel('Command input').click();
+    await page.getByLabel('Command input').fill('search 5 penguin');
+    await page.getByLabel('submit-button').click();
 
-  // Initialize an array to store the table data
+    const table = await page.getByLabel('search-error');
+
+    await expect(table).toBeVisible();
+
+})
+
+
   

@@ -46,8 +46,23 @@ export function LoadOutput(command : string, props : REPLOutputProps, response :
 
     let contentResponse : JSX.Element[]
     let concatenatedResponse : JSX.Element;
-    console.log("type:" + response.type)
-    if (response.type == "success"){
+
+    // in the case where a filepath corresponding to the mock does not exist
+    if (response == null || response == undefined) {
+      // should never happen
+      props.setResponses([
+        ...props.responses, 
+
+        <div className = {'error-message'} aria-label= {'load-error'}>
+          <p><b>load_csv requires a valid filepath</b></p>
+        </div>, 
+
+      <hr></hr>]);
+      return
+    }
+
+    // for all mocks that exist:
+    if (response.type == "success") {
         contentResponse = successResponseMap(response)
     } else if (response.type == "error") {
         contentResponse = errorResponseMap(response)

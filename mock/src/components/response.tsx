@@ -19,6 +19,6 @@ export function loadResponse(args: string[]) {
     else if (args[1] === "zoo_filepath"){
         return JSON.parse(successResponseZoo())
     } else {
-        return JSON.parse('{}')
+        return null
     }
 }

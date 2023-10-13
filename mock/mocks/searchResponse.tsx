@@ -1,11 +1,13 @@
+
+/**
+ * @param column a column within the processed file
+ * @param searchFor the term to search for
+ * @returns a json object containing a body for the actual response content.
+ */
 export function mockedSearchZoo(column: string | number, searchFor: string) {
-  let responseMap = new Map<string, string[][]>();
-  //   const zooMap = JSON.parse(
-  //     '{"data":{"headers":["one","two","three","four","five"],' +
-  //       '"body":[["01","Bronx Zoo","Jeremy","tiger","steak"],["02","San Francisco Zoo","Sean","tiger","steak"],' +
-  //       '["03","San Francisco Zoo","John","human","tiger"],["04","Maryland Zoo","Lawn","penguin","krill"],' +
-  //       '["05","Baltimore Zoo","Prawn","penguin","krill"],["06","New York Zoo","Drawn","penguin","sardines"]]},"type":"success"}'
-  //   );
+
+
+
   const zooMap: { [col: string]: { [search: string]: JSON } } = {
     "": {
       "tiger": JSON.parse(
@@ -60,15 +62,30 @@ export function mockedSearchZoo(column: string | number, searchFor: string) {
     },
   };
 
-  console.log(zooMap);
-  console.log("ues");
-  console.log(column);
-  console.log(searchFor);
-  if (!(column in zooMap) || !(searchFor in zooMap[column])) {
-    console.log("inside if");
-    return JSON.parse("[[]]");
-  } else if (column in zooMap && searchFor in zooMap[column]) {
-    console.log(zooMap[column][searchFor]);
-    return zooMap[column][searchFor];
+  let index : number = Number(column)
+  if (!Number.isNaN(index)) {
+    if (index == 3) {
+      if (!(searchFor in zooMap['animal'])) {
+        return JSON.parse("[[]]");
+      } else {
+        return zooMap['animal'][searchFor];
+      }
+    } else if (index == 4) {
+      if (!(searchFor in zooMap['food'])) {
+        return JSON.parse("[[]]");
+      } else {
+        return zooMap['food'][searchFor];
+      }
+    } else if (index > 4) {
+      return JSON.parse("[[]]");
+    }
+  } else {
+    if (!(column in zooMap) || !(searchFor in zooMap[column])) {
+      return JSON.parse("[[]]");
+    } else if (column in zooMap && searchFor in zooMap[column]) {
+      return zooMap[column][searchFor];
+    }
   }
+
+
 }

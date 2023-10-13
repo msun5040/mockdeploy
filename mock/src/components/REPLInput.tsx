@@ -103,7 +103,7 @@ export function REPLInput(props : REPLInputProps) {
       // view endpoint: 
       else if (splitCommand[0].toLowerCase() == "view") {
         response = loadResponse(splitCommand)
-        ViewOutput(props, props.currentDataset)
+        ViewOutput(command, props, props.currentDataset)
         handleSubmit(parsedCommand)
 
       } 

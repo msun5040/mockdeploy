@@ -17,7 +17,7 @@ test('on calling load with no arguments', async ({ page }) => {
 
   await page.getByLabel('submit-button').click();
   await expect(page.getByLabel('load-error')).
-      toContainText('load_csv requires at least 1 argument.')
+      toContainText('load_csv requires a valid filepath')
 })
 
 // load reuqires a valid file path:

@@ -149,6 +149,84 @@ test('on loading successfully, then loading successfully, then search', async ({
 })
 
 
+test('on trying to search without an error response map loaded', async ({page}) => {
 
+
+  // load a valid csv that isn't the searchable one
+  await page.getByLabel('Command input').click();
+  await page.getByLabel('Command input').fill('load_csv no');
+  await page.getByLabel('submit-button').click();
+
+  await expect(page.getByText('error: "data/SimpleCsv/head.csv (No such file or directory)"')).toBeVisible()
+
+  // searching loaded error table
+  await page.getByLabel('Command input').click();
+  await page.getByLabel('Command input').fill('search 3 tiger');
+  await page.getByLabel('submit-button').click();
+
+
+  const searchTable = await page.getByLabel('search-response')
+  await expect(page.getByText("No dataset has been loaded at this time.")).toBeVisible()
+  
+})
+
+test('on loading in brief and searching in verbose', async ({page}) => {
+
+
+  // load a valid csv that isn't the searchable one
+  await page.getByLabel('Command input').click();
+  await page.getByLabel('Command input').fill('load_csv zoo_filepath');
+  await page.getByLabel('submit-button').click();
+
+  await expect(page.getByText('success: {"headers":["ID","Zoo Location","Name","Animal","Food"],"body":[["01","Bronx Zoo","Jeremy","tiger","steak"],["02","San Francisco Zoo","Sean","tiger","steak"],["03","San Francisco Zoo","John","human","tiger"],["04","Maryland Zoo","Lawn","penguin","krill"],["05","Baltimore Zoo","Prawn","penguin","krill"],["06","New York Zoo","Drawn","penguin","sardines"]]}')).toBeVisible()
+
+  // searching loaded error table
+  await page.getByLabel('Command input').click();
+  await page.getByLabel('Command input').fill('mode');
+  await page.getByLabel('submit-button').click();
+  
+
+  // searching loaded error table
+  await page.getByLabel('Command input').click();
+  await page.getByLabel('Command input').fill('search 3 tiger');
+  await page.getByLabel('submit-button').click();
+
+
+  const searchTable = await page.getByLabel('search-response')
+  
+  await expect(page.getByText("Verbose output: command = search 3 tiger")).toBeVisible()
+  await expect(searchTable.getByText('tiger')).toHaveCount(2)
+  await expect(searchTable.getByText('steak')).toHaveCount(2)
+
+  
+  
+})
+
+test('on loading in brief and view in verbose', async ({page}) => {
+
+  // set mode to verbose
+  await page.getByLabel('Command input').click();
+  await page.getByLabel('Command input').fill('load_csv zoo_filepath');
+  await page.getByLabel('submit-button').click();
+
+
+  // searching loaded error table
+  await page.getByLabel('Command input').click();
+  await page.getByLabel('Command input').fill('mode');
+  await page.getByLabel('submit-button').click();
+
+  // searching loaded error table
+  await page.getByLabel('Command input').click();
+  await page.getByLabel('Command input').fill('view');
+  await page.getByLabel('submit-button').click();
+
+
+  const viewTable = await page.getByLabel('view-response')
+  await expect(page.getByText("Verbose output: command = view")).toBeVisible()
+  await expect(viewTable.getByText('tiger')).toHaveCount(3)
+  await expect(viewTable.getByText('steak')).toHaveCount(2)
+  await expect(viewTable.getByText('penguin')).toHaveCount(3)
+  
+})
 
 

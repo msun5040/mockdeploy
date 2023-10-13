@@ -1,62 +1,126 @@
 import { test, expect } from '@playwright/test';
 
 
-/**
-  The general shapes of tests in Playwright Test are:
-    1. Navigate to a URL
-    2. Interact with the page
-    3. Assert something about the page against your expectations
-  Look for this pattern in the tests below!
- */
-
 // If you needed to do something before every test case...
-test.beforeEach(() => {
-    // ... you'd put it here.
-    // TODO: Is there something we need to do before every test case to avoid repeating code?
+test.beforeEach(async ({page}) => {
+    await page.goto('http://localhost:8000/');
+
   })
 
-/**
- * Don't worry about the "async" yet. We'll cover it in more detail
- * for the next sprint. For now, just think about "await" as something 
- * you put before parts of your test that might take time to run, 
- * like any interaction with the page.
- */
+
+// load should produce an error message upon passing no arguments
 test('on calling load with no arguments', async ({ page }) => {
-  // Notice: http, not https! Our front-end is not set up for HTTPs.
-  await page.goto('http://localhost:8000/');
+  
   await expect(page.getByLabel('Command input')).toBeVisible()
-
-
 
   await page.getByLabel('Command input').click();
   await page.getByLabel('Command input').fill('load_csv');
+
   await page.getByLabel('submit-button').click();
-  await expect(page.getByLabel('load-error')).toContainText('load_csv requires at least 1 argument.')
+  await expect(page.getByLabel('load-error')).
+      toContainText('load_csv requires at least 1 argument.')
 })
 
-test('after I type into the input box, its text changes', async ({ page }) => {
-  // Step 1: Navigate to a URL
-  await page.goto('http://localhost:8000/');
+// load reuqires a valid file path:
+test('on calling load without a valid (mocked) file path', async ({page}) => {
+  await expect(page.getByLabel('Command input')).toBeVisible()
 
-  // Step 2: Interact with the page
-  // Locate the element you are looking for
   await page.getByLabel('Command input').click();
-  await page.getByLabel('Command input').fill('Awesome command');
+  await page.getByLabel('Command input').fill('load_csv asdfasdf');
 
-  // Step 3: Assert something about the page
-  // Assertions are done by using the expect() function
-  const mock_input = `Awesome command`
-  await expect(page.getByLabel('Command input')).toHaveValue(mock_input)
-});
+  await page.getByLabel('submit-button').click();
+  await expect(page.getByLabel('load-error')).
+      toContainText('load_csv requires a valid filepath')
 
-test('on page load, i see a button', async ({ page }) => {
-  // TODO WITH TA: Fill this in!
-});
+})
 
-test('after I click the button, its label increments', async ({ page }) => {
-  // TODO WITH TA: Fill this in to test your button counter functionality!
-});
+// calling 'load_csv yes' should produce a valid reponse
+test('on calling load with a valid file path', async ({page}) => {
+  await expect(page.getByLabel('Command input')).toBeVisible()
 
-test('after I click the button, my command gets pushed', async ({ page }) => {
-  // TODO: Fill this in to test your button push functionality!
+  await page.getByLabel('Command input').click();
+  await page.getByLabel('Command input').fill('load_csv yes');
+
+  await page.getByLabel('submit-button').click();
+  await expect(page.getByLabel('load-success-response')).
+      toContainText('Response Type: success')
+
+})
+
+// calling 'load_csv yes' and then clicking mode should put it in verbose
+test('on calling load with a valid (mocked) file path then clicking verbose', 
+async ({page}) => {
+  await expect(page.getByLabel('Command input')).toBeVisible()
+
+  await page.getByLabel('Command input').click();
+  await page.getByLabel('Command input').fill('load_csv yes');
+  await page.getByLabel('submit-button').click();
+
+  await expect(page.getByLabel('brief-label')).
+      toContainText('Brief Output: ')
+  
+  await page.getByLabel('Command input').click();
+  await page.getByLabel('Command input').fill('mode');
+  await page.getByLabel('submit-button').click();
+
+  await page.getByLabel('Command input').click();
+  await page.getByLabel('Command input').fill('load_csv yes');
+  await page.getByLabel('submit-button').click();
+
+  await expect(page.getByLabel('verbose-label')).
+  toContainText('Verbose Output: ')
+
+  await expect(page.getByLabel('load-response-map')).
+      toHaveCount(2)
+})
+
+// calling load_csv yes and then switching the mode twice
+test('on calling load with a valid (mocked) file path then switch mode x2', 
+async ({page}) => {
+  await expect(page.getByLabel('Command input')).toBeVisible()
+
+  await page.getByLabel('Command input').click();
+  await page.getByLabel('Command input').fill('load_csv yes');
+  await page.getByLabel('submit-button').click();
+
+  await expect(page.getByLabel('brief-label')).
+      toContainText('Brief Output: ')
+  
+  await page.getByLabel('Command input').click();
+  await page.getByLabel('Command input').fill('mode');
+  await page.getByLabel('submit-button').click();
+
+  await page.getByLabel('Command input').click();
+  await page.getByLabel('Command input').fill('load_csv yes');
+  await page.getByLabel('submit-button').click();
+
+  await page.getByLabel('Command input').click();
+  await page.getByLabel('Command input').fill('mode');
+  await page.getByLabel('submit-button').click();
+
+  await page.getByLabel('Command input').click();
+  await page.getByLabel('Command input').fill('load_csv yes');
+  await page.getByLabel('submit-button').click();
+
+
+  await expect(page.getByLabel('verbose-label')).
+  toContainText('Verbose Output: ')
+
+  await expect(page.getByLabel('brief-label')).toHaveCount(2)
+  await expect(page.getByLabel('verbose-label')).toHaveCount(1)
+  await expect(page.getByLabel('load-response-map')).
+      toHaveCount(3)
+})
+
+
+// calling 'load_csv no' to test how error mocks are handled
+test('on calling load with an error response', async ({ page }) => {
+  await expect(page.getByLabel('Command input')).toBeVisible()
+
+  await page.getByLabel('Command input').click();
+  await page.getByLabel('Command input').fill('load_csv no');
+
+  await page.getByLabel('submit-button').click();
+  await expect(page.getByLabel('load-error-response')).
+      toContainText('Response Type: error')
 });

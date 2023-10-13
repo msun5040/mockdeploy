@@ -16,14 +16,14 @@ interface ResponseMap {
 
 function successResponseMap(response: ResponseMap) {
   return ([
-    <li>{"Response Type:"+  response["type"] }</li>, 
+    <li aria-label = "load-success-response">{"Response Type: "+  response["type"] }</li>, 
     <li>{response["type"] + ": " + JSON.stringify(response["data"])}</li>
   ])
 }
 
 function errorResponseMap(response: ResponseMap) {
     return ([
-      <li>{"Response Type:"+  response["type"] }</li>, 
+      <li aria-label = "load-error-response">{"Response Type: "+  response["type"] }</li>, 
       <li>{response["type"] + ": " + JSON.stringify(response["error_message"])}</li>
     ])
   }
@@ -42,16 +42,24 @@ export function LoadOutput(command : string, props : REPLOutputProps, response :
         contentResponse = errorResponseMap(response)
     } else {
       // should never happen
-      contentResponse = [<li>this shouldn't be possible</li>]
+      props.setResponses([
+        ...props.responses, 
+
+        <div className = {'error-message'} aria-label= {'load-error'}>
+          <p><b>load_csv requires a valid filepath</b></p>
+        </div>, 
+
+      <hr></hr>]);
+      return
     }
 
     // verbose setting
     if (props.toggle == 0) {
       concatenatedResponse = 
-      <div>
-        <p>
+      <div aria-label = "load-response">
+        <p aria-label = "brief-label">
           <b>Brief Output: </b>
-          <ul>
+          <ul aria-label = "load-response-map">
             {contentResponse}
           </ul>
         </p>
@@ -61,11 +69,11 @@ export function LoadOutput(command : string, props : REPLOutputProps, response :
     // non-verbose setting
     else if (props.toggle == 1) {
       concatenatedResponse = 
-      <div>
+      <div aria-label = "load-response">
         <p>
-          <b>Verbose Output: </b>
-          <ul>
-            <li>{"Command:" + command}</li>
+          <b aria-label = "verbose-label">Verbose Output: </b>
+          <ul aria-label = "load-response-map">
+            <li>{"Command: " + command}</li>
             {contentResponse}
           </ul>
         </p>
@@ -74,7 +82,8 @@ export function LoadOutput(command : string, props : REPLOutputProps, response :
     else {
       concatenatedResponse = <div> this isn't right... </div>
     }
-      props.setResponses([...props.responses, concatenatedResponse, <hr></hr>])
+      props.setResponses([...props.responses, concatenatedResponse, 
+      <hr aria-label = "command-separator"></hr>])
 
     }
 

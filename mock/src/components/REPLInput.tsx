@@ -117,6 +117,10 @@ export function REPLInput(props : REPLInputProps) {
       // catch-all for other unimplmented endpoints
       else {
         response = loadResponse(splitCommand)
+        props.setResponses([...props.responses,
+        <div className = "error-message" aria-label = "invalid-command-error">
+          <b>invalid command</b>
+        </div>, <hr aria-label = "command-separator"></hr>])
         handleSubmit(command + " is not a valid command.")
       }
 

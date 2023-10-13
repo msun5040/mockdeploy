@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import Table from "react-bootstrap/Table";
-import { TableComponent } from "./TableComponent";
+import { TableComponent } from "./TableComponentView";
 
 interface REPLOutputProps {
   // TODO: Fill this with desired props... Maybe something to keep track of the submitted commands
@@ -30,7 +30,7 @@ export function ViewOutput(prop: REPLOutputProps, responseMap: JSON | null) {
     let convertedResponseMap: ViewOutputProp = responseMap as unknown as ViewOutputProp;
     
     // errored response maps should output nothing but an informative message.
-    if (responseMap == null || convertedResponseMap.type == "error") {
+    if (responseMap == null || responseMap == undefined|| convertedResponseMap.type == "error") {
       console.log(responseMap)
       concatenatedResponse = 
         <div className = "error-message" aria-label = "view-error">

@@ -32,12 +32,6 @@ export function TableComponentSearch(responseMap : JSON | null){
         let columns : JSX.Element[] = []
         console.log(convertedResponseMap)
 
-        // for (let i = 0; i < convertedResponseMap.data.headers.length; i ++) {
-        //     columns.push(<th>{convertedResponseMap.data.headers[i]}</th>)
-        // }
-        // let headers : JSX.Element = <thead><tr>{columns}</tr></thead>
-
-        // popoulating the rest of the data
         let rows :JSX.Element[] = []
         for (let i = 0; i < convertedResponseMap.body.length;i ++) {
             let row : JSX.Element[] = [];

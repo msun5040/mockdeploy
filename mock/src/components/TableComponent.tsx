@@ -3,6 +3,7 @@ import Table from 'react-bootstrap/Table';
 
 interface TableOutputProps{
     type: string
+    // data to be table-ified
     data: dataResponse
     error_message: string
 }
@@ -12,7 +13,12 @@ interface dataResponse {
     body: string[][]
 }
 
-export function TableComponent(responseMap:JSON | null){
+/**
+ * This method.component converts a JSON to a table format.
+ * @param responseMap: the responseMap that contains all of the data to be 
+ * converted to a table format
+ */
+export function TableComponent(responseMap : JSON | null){
     let concatenatedResponse :JSX.Element;
     let convertedResponseMap: TableOutputProps = responseMap as unknown as TableOutputProps;
     

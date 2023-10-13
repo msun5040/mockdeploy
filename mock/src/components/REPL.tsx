@@ -5,35 +5,41 @@ import { REPLInput } from './REPLInput';
 import { VerbosityController } from './VerbosityController';
 
 
-/* 
-  You'll want to expand this component (and others) for the sprints! Remember 
-  that you can pass "props" as function arguments. If you need to handle state 
-  at a higher level, just move up the hooks and pass the state/setter as a prop.
-  
-  This is a great top level component for the REPL. It's a good idea to have organize all components in a component folder.
-  You don't need to do that for this gearup.
-*/
 
-// interface 
-
+/**
+ * The overall component to be returned to the UI
+ */
 export default function REPL() {
-  // TODO: Add some kind of shared state that holds all the commands submitted.
+  
+  // deprecated.
   const [cmdList, setCommandList] = useState<string[]>([]);
+
+  // maintains the history of all of the commands and their outputs
   const [responses, setResponses] = useState<JSX.Element[]>([]);
+
+  // maintains the verbosity mode of the 
   const [verbosity, setVerbosity] = useState<number>(0);
+
+  // maintains the dataMap of all of the previously tried file paths
   const [dataMap, setDataMap] = useState<Map<string, JSON>>(new Map<string, JSON>())
+
+  // maintains the LOADED datset
   const [currentDataset, setCurrentDataset] = useState<JSON | null>(null)
+
+
   return (
     <div className="repl">  
       <REPLHistory history = {responses}/>
+
       <VerbosityController toggle = {verbosity} setToggle = {setVerbosity}/>
       <hr></hr>
-      <REPLInput history = {cmdList} setHistory={setCommandList}
-      toggle = {verbosity} setToggle = {setVerbosity} 
+
+      {/* {REPL Input handles all of the work and divides and conquers across other components} */}
+      <REPLInput toggle = {verbosity} setToggle = {setVerbosity} 
       responses = {responses} setResponses= {setResponses}
       dataMap={dataMap} setDataMap={setDataMap}
-      currentDataset = {currentDataset} setCurrentDataset = {setCurrentDataset}
-      verbosity = {verbosity} setVerbosity = {setVerbosity}/>
+      currentDataset = {currentDataset} setCurrentDataset = {setCurrentDataset}/>
+      
     </div>
   );
 }

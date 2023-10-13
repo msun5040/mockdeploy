@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import Table from "react-bootstrap/Table";
-import { TableComponent } from "./TableOutput";
+import { TableComponent } from "./TableComponent";
 
 interface REPLOutputProps {
   // TODO: Fill this with desired props... Maybe something to keep track of the submitted commands
@@ -20,6 +20,10 @@ interface dataResponse {
   body: string[][];
 }
 
+/**
+ * this component handles all of the behavior necessary to view a given dataset
+ * @param prop: a prop containing all of the passed state hooks. 
+ */
 export function ViewOutput(prop: REPLOutputProps, responseMap: JSON | null) {
    
     let concatenatedResponse :JSX.Element;
@@ -27,12 +31,18 @@ export function ViewOutput(prop: REPLOutputProps, responseMap: JSON | null) {
     
     // errored response maps should output nothing but an informative message.
     if (responseMap == null || convertedResponseMap.type == "error") {
-        concatenatedResponse = <div>No dataset has been loaded at this time.</div>
+      console.log(responseMap)
+      concatenatedResponse = 
+        <div className = "error-message" aria-label = "view-error">
+          <b>No dataset has been loaded at this time.</b>
+        </div>
+      prop.setResponses([...prop.responses, concatenatedResponse, 
+        <hr aria-label = "command-separator"></hr>])
+      return
     } 
-
-
-  concatenatedResponse = <div aria-label = 'view-response'> TableComponent(responseMap)}</div>;
-        
+    
+    // valid responses to be viewed.
+    concatenatedResponse = <div aria-label = 'view-response'>{TableComponent(responseMap)}</div>;
     prop.setResponses([...prop.responses, concatenatedResponse, 
     <hr aria-label = "command-separator"></hr>])
 }

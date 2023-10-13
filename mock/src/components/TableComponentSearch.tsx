@@ -2,7 +2,10 @@ import { Dispatch, SetStateAction } from "react"
 import Table from 'react-bootstrap/Table';
 
 interface TableOutputProps{
+    type: string
+    // data to be table-ified
     body: string[][]
+    error_message: string
 }
 
 interface dataResponse {
@@ -17,7 +20,6 @@ interface dataResponse {
  */
 export function TableComponentSearch(responseMap : JSON | null){
     let concatenatedResponse :JSX.Element;
-    console.log(responseMap)
     let convertedResponseMap: TableOutputProps = responseMap as unknown as TableOutputProps;
     
     // errored response maps should output nothing but an informative message.

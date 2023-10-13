@@ -31,6 +31,8 @@ In choosing this architecture, we had hoped to make the code more organized
 instead of having everything cluttered inside of REPLInput. 
 
 ## Errors/Bugs --
+No known errors or bugs; everything is case sensitive, which we will change in 
+the future for REPL
 
 ## Tests --
 see testing directory to see how the tests work 

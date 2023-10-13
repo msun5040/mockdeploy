@@ -52,12 +52,22 @@ export function searchOutput(command: string, prop: REPLOutputProps) {
       <hr aria-label="command-separator"></hr>,
     ]);
   } else {
-    console.log(mockedSearchZoo(searchColumn, searchTerm));
-    concatenatedResponse = (
-      <div aria-label="search-response">
-        {TableComponentSearch(mockedSearchZoo(searchColumn, searchTerm))}
-      </div>
-    );
+    let temp = mockedSearchZoo(searchColumn, searchTerm);
+    console.log(temp)
+    if (temp.every((subArray : string[]) => Array.isArray(subArray) && subArray.length === 0)) {
+      concatenatedResponse = (
+        <div className="error-message" aria-label="search-error">
+          <b>No entries with column or search term were found in loaded csv.</b>
+        </div>
+      );
+    } else {
+      concatenatedResponse = (
+        <div aria-label="search-response">
+          {TableComponentSearch(mockedSearchZoo(searchColumn, searchTerm))}
+        </div>
+      );
+    }
+
     prop.setResponses([
       ...prop.responses,
       concatenatedResponse,

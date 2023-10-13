@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 
 // If you needed to do something before every test case...
 test.beforeEach(async ({page}) => {
-    await page.goto('http://localhost:8000/');
+    await page.goto('http://localhost:8001/');
 
   })
 

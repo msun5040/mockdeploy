@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 
 // If you needed to do something before every test case...
 test.beforeEach(async ({page}) => {
-    await page.goto('http://localhost:8000/');
+    await page.goto('http://localhost:8001/');
 
   })
 
@@ -12,7 +12,6 @@ test.beforeEach(async ({page}) => {
 test('on calling load with no arguments', async ({ page }) => {
   
   await expect(page.getByLabel('Command input')).toBeVisible()
-
   await page.getByLabel('Command input').click();
   await page.getByLabel('Command input').fill('load_csv');
 

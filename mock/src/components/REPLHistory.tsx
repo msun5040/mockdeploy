@@ -6,14 +6,17 @@ interface REPLHistoryProps{
     history: JSX.Element[]
 
 }
+
+/**
+ * @param props: an object containing the history state hook that maintains the history
+ */
 export function REPLHistory(props : REPLHistoryProps) {
     console.log(props)
 
+    // manages the history of the commands and their outputs.
     return (
         <div className="repl-history">
-            {/* This is where command history will go */}
             {props.history.map(logEntrance => logEntrance)}
-            
         </div>
     );
 }

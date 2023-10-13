@@ -40,7 +40,7 @@ test('on calling load with a valid file path', async ({page}) => {
 
   await page.getByLabel('Command input').click();
   await page.getByLabel('Command input').fill('load_csv yes');
-
+  
   await page.getByLabel('submit-button').click();
   await expect(page.getByLabel('load-success-response')).
       toContainText('Response Type: success')
@@ -123,4 +123,16 @@ test('on calling load with an error response', async ({ page }) => {
   await page.getByLabel('submit-button').click();
   await expect(page.getByLabel('load-error-response')).
       toContainText('Response Type: error')
+});
+
+// calling 'load_csv no-header'
+test('on calling load on a file with no header', async ({ page }) => {
+  await expect(page.getByLabel('Command input')).toBeVisible()
+
+  await page.getByLabel('Command input').click();
+  await page.getByLabel('Command input').fill('load_csv no_header');
+  await page.getByLabel('submit-button').click();
+
+  await expect(page.getByText('success: {"headers":["0","1","2","3","4"],"body":[["10","20","30","40","50"],["100","200","300","400","500"]]}')).
+      toBeVisible()
 });

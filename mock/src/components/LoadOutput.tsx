@@ -1,7 +1,6 @@
 import { Dispatch, SetStateAction, useState} from 'react';
 
 interface REPLOutputProps{
-    // TODO: Fill this with desired props... Maybe something to keep track of the submitted commands
     toggle: number
     responses: JSX.Element[]
     setResponses: Dispatch<SetStateAction<JSX.Element[]>>
@@ -13,7 +12,9 @@ interface ResponseMap {
   error_message: string
 }
 
-
+/**
+ * @param response: A response map containing type, data
+ */
 function successResponseMap(response: ResponseMap) {
   return ([
     <li aria-label = "load-success-response">{"Response Type: "+  response["type"] }</li>, 
@@ -21,6 +22,9 @@ function successResponseMap(response: ResponseMap) {
   ])
 }
 
+/**
+ * @param response: a response map containing type and error_message
+ */
 function errorResponseMap(response: ResponseMap) {
     return ([
       <li aria-label = "load-error-response">{"Response Type: "+  response["type"] }</li>, 
@@ -28,10 +32,17 @@ function errorResponseMap(response: ResponseMap) {
     ])
   }
 
+
+/**
+ * @param command: the command called (load_csv ...)
+ * @param props: an object containing the verbosity controller, the response 
+ * history and the setter for that hook
+ * @param response: the mocked response map from the loader
+ */
 export function LoadOutput(command : string, props : REPLOutputProps, response : ResponseMap){
-    // console.log(command)
-    // console.log(props)
-    // console.log(response)
+
+    let splitCommand : string[] = command.split(" ")
+    let filepath : string = splitCommand[1]
 
     let contentResponse : JSX.Element[]
     let concatenatedResponse : JSX.Element;
@@ -40,7 +51,7 @@ export function LoadOutput(command : string, props : REPLOutputProps, response :
         contentResponse = successResponseMap(response)
     } else if (response.type == "error") {
         contentResponse = errorResponseMap(response)
-    } else {
+    }  else {
       // should never happen
       props.setResponses([
         ...props.responses, 
@@ -79,6 +90,7 @@ export function LoadOutput(command : string, props : REPLOutputProps, response :
         </p>
       </div>
     }
+    // shouldn't be possible... 
     else {
       concatenatedResponse = <div> this isn't right... </div>
     }

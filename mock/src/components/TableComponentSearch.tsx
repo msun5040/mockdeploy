@@ -2,9 +2,7 @@ import { Dispatch, SetStateAction } from "react"
 import Table from 'react-bootstrap/Table';
 
 interface TableOutputProps{
-    type: string
-    data: dataResponse
-    error_message: string
+    body: string[][]
 }
 
 interface dataResponse {
@@ -12,8 +10,14 @@ interface dataResponse {
     body: string[][]
 }
 
-export function TableComponent(responseMap:JSON | null){
+/**
+ * This method.component converts a JSON to a table format.
+ * @param responseMap: the responseMap that contains all of the data to be 
+ * converted to a table format
+ */
+export function TableComponentSearch(responseMap : JSON | null){
     let concatenatedResponse :JSX.Element;
+    console.log(responseMap)
     let convertedResponseMap: TableOutputProps = responseMap as unknown as TableOutputProps;
     
     // errored response maps should output nothing but an informative message.
@@ -26,24 +30,23 @@ export function TableComponent(responseMap:JSON | null){
         let columns : JSX.Element[] = []
         console.log(convertedResponseMap)
 
-        for (let i = 0; i < convertedResponseMap.data.headers.length; i ++) {
-            columns.push(<th>{convertedResponseMap.data.headers[i]}</th>)
-        }
-        let headers : JSX.Element = <thead><tr>{columns}</tr></thead>
+        // for (let i = 0; i < convertedResponseMap.data.headers.length; i ++) {
+        //     columns.push(<th>{convertedResponseMap.data.headers[i]}</th>)
+        // }
+        // let headers : JSX.Element = <thead><tr>{columns}</tr></thead>
 
         // popoulating the rest of the data
         let rows :JSX.Element[] = []
-        for (let i = 0; i < convertedResponseMap.data.body.length;i ++) {
+        for (let i = 0; i < convertedResponseMap.body.length;i ++) {
             let row : JSX.Element[] = [];
-            for (let j = 0; j < convertedResponseMap.data.body[0].length; j ++) {
-                row.push(<td>{convertedResponseMap.data.body[i][j]}</td>)
+            for (let j = 0; j < convertedResponseMap.body[0].length; j ++) {
+                row.push(<td>{convertedResponseMap.body[i][j]}</td>)
             }
             rows.push(<tr>{row}</tr>)
         }
         let data : JSX.Element = <tbody>{rows}</tbody>
         let table: JSX.Element = 
             <Table striped bordered hover>
-                {headers}
                 {data}
             </Table>
         return table

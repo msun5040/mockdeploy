@@ -3,40 +3,48 @@ import { Dispatch, SetStateAction, useState} from 'react';
 import { ControlledInput } from './ControlledInput';
 import {LoadOutput} from './LoadOutput'
 import { ViewOutput } from './ViewOutput';
+import { searchOutput } from './SearchOutput';
 
 import {loadResponse} from './response'
 import Button from 'react-bootstrap/Button';
 
+/**
+ * This interface contains all of the possible states managed in this component.
+ * 
+ */
 interface REPLInputProps{
-  // TODO: Fill this with desired props... Maybe something to keep track of the submitted commands
-  history: string[]
-  setHistory: Dispatch<SetStateAction<string[]>>
-
+  // verbosity controller
   toggle: number
   setToggle: Dispatch<SetStateAction<number>>
 
+  // command and output history
   responses: JSX.Element[]
   setResponses: Dispatch<SetStateAction<JSX.Element[]>>
 
+  // stored filepaths to their datasets
   dataMap: Map<string, JSON>
   setDataMap: Dispatch<SetStateAction<Map<string, JSON>>>
 
+  // the current dataset being operated on
   currentDataset: JSON | null
   setCurrentDataset:  Dispatch<SetStateAction<JSON | null>>
-
-  verbosity: number
-  setVerbosity: Dispatch<SetStateAction<number>>
 }
-// You can use a custom interface or explicit fields or both! An alternative to the current function header might be:
-// REPLInput(history: string[], setHistory: Dispatch<SetStateAction<string[]>>)
+
+/**
+ * This is the center control for all of the endpoints. This is the center
+ * from which all other mocks are called, and it handles all of the possible
+ * inputs. 
+ * @param props: an object containing all of the above fields 
+ */
 export function REPLInput(props : REPLInputProps) {
-    // Remember: let React manage state in your webapp. 
+
     // Manages the contents of the input box
     const [commandString, setCommandString] = useState<string>('');
-    // TODO WITH TA : add a count state
+
+    // manages the number of times the submit button has been pressed
     const [count, setCount] = useState<number>(0);
-    // TODO WITH TA: build a handleSubmit function called in button onClick
-    //const [dataMap, setDataMap] = useState<{ [key: string]: JSON }>({});
+
+    // manages the map from filepath to dataset
     const [dataMap, setDataMap] =useState(new Map<string, JSON>())
 
 
@@ -53,9 +61,9 @@ export function REPLInput(props : REPLInputProps) {
 
       let splitCommand : string[] = command.split(" ")
       let parsedCommand : string = splitCommand[0];
-      // console.log(splitCommand[0].toLowerCase())
       let response: any;
       if (splitCommand[0].toLowerCase() == "load_csv") {
+
         // display error message for user
         if (splitCommand.length < 2) {
 
@@ -64,18 +72,14 @@ export function REPLInput(props : REPLInputProps) {
               <p><b>load_csv requires at least 1 argument.</b></p>
             </div>, 
           <hr></hr>])
-
         } else {
 
           if (dataMap.has(splitCommand[1])){
             response = dataMap.get(splitCommand[1])
-
           } else {
-
             response = loadResponse(splitCommand)
             setDataMap(dataMap.set(splitCommand[1], response))
           }
-
         }
 
 
@@ -85,24 +89,33 @@ export function REPLInput(props : REPLInputProps) {
         LoadOutput(command , props, response)
         
 
-      } else if (splitCommand[0].toLowerCase() == "mode") {
-        if (props.verbosity == 0) {
-          props.setVerbosity(1)
+
+      } 
+      // toggle the verbosity 
+      else if (splitCommand[0].toLowerCase() == "mode") {
+        if (props.toggle == 0) {
+          props.setToggle(1)
         } else {
-          props.setVerbosity(0)
+          props.setToggle(0)
         }
 
-      } else if (splitCommand[0].toLowerCase() == "view") {
+      } 
+      // view endpoint: 
+      else if (splitCommand[0].toLowerCase() == "view") {
         response = loadResponse(splitCommand)
         ViewOutput(props, props.currentDataset)
-
-        // TODO: define another component called view output to handle the view stuff
         handleSubmit(parsedCommand)
 
-      } else if (splitCommand[0].toLowerCase() == "search") {
+      } 
+      // search endpoint: 
+      else if (splitCommand[0].toLowerCase() == "search") {
         response = loadResponse(splitCommand)
+        searchOutput(command, props)
         handleSubmit(parsedCommand)
-      } else {
+      } 
+      
+      // catch-all for other unimplmented endpoints
+      else {
         response = loadResponse(splitCommand)
         handleSubmit(command + " is not a valid command.")
       }
@@ -111,25 +124,16 @@ export function REPLInput(props : REPLInputProps) {
 
     function handleSubmit(commandString : string) {
       setCount(count + 1);
-      props.setHistory([...props.history, commandString]);
     }
-    // TODO: Once it increments, try to make it push commands... Note that you can use the `...` spread syntax to copy what was there before
-    // add to it with new commands.
-    /**
-     * We suggest breaking down this component into smaller components, think about the individual pieces 
-     * of the REPL and how they connect to each other...
-     */
+
     return (
         <div className="repl-input">
-            {/* This is a comment within the JSX. Notice that it's a TypeScript comment wrapped in
-            braces, so that React knows it should be interpreted as TypeScript */}
-            {/* I opted to use this HTML tag; you don't need to. It structures multiple input fields
-            into a single unit, which makes it easier for screenreaders to navigate. */}
+
             <fieldset>
               <legend>Enter a command:</legend>
               <ControlledInput value={commandString} setValue={setCommandString} ariaLabel={"Command input"}/>
             </fieldset>
-            
+
             <Button variant = "primary" aria-label='submit-button' onClick = {() => handle(commandString)}>Submitted {count} </Button>
         </div>
     );

@@ -6,10 +6,14 @@ interface VerbosityToggler {
     toggle: number
     setToggle: Dispatch<SetStateAction<number>>
 }
+
+/**
+ * this component handles the behavior for the verbosity toggler
+ * @param prop: an object containing the toggler state hook and the 
+ * setter for the state hook
+ */
 export function VerbosityController(prop : VerbosityToggler) {
     function toggleVerbosity () {
-        // toggle = 0 is brief
-        // toggle = 1 is verbose
         if (prop.toggle == 0) {
             prop.setToggle(1)
         } else {
@@ -18,6 +22,8 @@ export function VerbosityController(prop : VerbosityToggler) {
     }
 
     return (
+        // a button that has a label on it, indicating whether is in brief 
+        // or verbose mode.
         <ToggleButton id = 'verbosity-control' value = {prop.toggle} 
         onClick = {() => toggleVerbosity()}>
             {prop.toggle == 0 ? 'brief' : 'verbose'}

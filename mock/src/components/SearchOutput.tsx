@@ -54,7 +54,7 @@ export function searchOutput(command: string, prop: REPLOutputProps) {
   } else {
     let temp = mockedSearchZoo(searchColumn, searchTerm);
     console.log(temp)
-    if (temp.every((subArray : string[]) => Array.isArray(subArray) && subArray.length === 0)) {
+    if (temp.length == 1 && temp[0].length == 0) {
       concatenatedResponse = (
         <div className="error-message" aria-label="search-error">
           <b>No entries with column or search term were found in loaded csv.</b>

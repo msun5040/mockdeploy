@@ -34,7 +34,7 @@ export function mockedSearchZoo(column: string | number, searchFor: string) {
         '{"body":[["03", "San Francisco Zoo", "John", "human", "tiger"]]}'
       ),
 
-      "penguins": JSON.parse(
+      "penguin": JSON.parse(
         '{"body":[["04", "Maryland Zoo", "Lawn", "penguin", "krill"],' +
           '["05", "Baltimore Zoo", "Prawn", "penguin", "krill"],' +
           '["06", "New York Zoo", "Drawn", "penguin", "sardines"]]}'
@@ -45,7 +45,7 @@ export function mockedSearchZoo(column: string | number, searchFor: string) {
         '{"body":[["03", "San Francisco Zoo", "John", "human", "tiger"]]}'
       ),
 
-      "penguins": JSON.parse(
+      "penguin": JSON.parse(
         '{"body":[["04", "Maryland Zoo", "Lawn", "penguin", "krill"],' +
           '["05", "Baltimore Zoo", "Prawn", "penguin", "krill"],' +
           '["06", "New York Zoo", "Drawn", "penguin", "sardines"]]}'

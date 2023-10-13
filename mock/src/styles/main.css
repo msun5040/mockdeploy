@@ -28,6 +28,10 @@
     margin: auto;
     display: block;
 }
+
+.error-message {
+    color:red;
+}
 button{
     margin: auto;
     display: block;

@@ -47,6 +47,10 @@ export function REPLInput(props : REPLInputProps) {
      */
     function handle(command : string) {
       
+      if (command == "") {
+        props.setResponses([...props.responses, <hr aria-label = "command-separator"></hr>]);
+      }
+
       let splitCommand : string[] = command.split(" ")
       let parsedCommand : string = splitCommand[0];
       // console.log(splitCommand[0].toLowerCase())
@@ -54,17 +58,24 @@ export function REPLInput(props : REPLInputProps) {
       if (splitCommand[0].toLowerCase() == "load_csv") {
         // display error message for user
         if (splitCommand.length < 2) {
-          console.log(splitCommand.length)
+
           props.setResponses([...props.responses, 
-          <div aria-label= {'load-error'}><p style = {{color: 'red'}}><b>load_csv requires at least 1 argument.</b></p></div>, 
+            <div className = {'error-message'} aria-label= {'load-error'}>
+              <p><b>load_csv requires at least 1 argument.</b></p>
+            </div>, 
           <hr></hr>])
+
         } else {
+
           if (dataMap.has(splitCommand[1])){
             response = dataMap.get(splitCommand[1])
+
           } else {
+
             response = loadResponse(splitCommand)
             setDataMap(dataMap.set(splitCommand[1], response))
           }
+
         }
 
 
